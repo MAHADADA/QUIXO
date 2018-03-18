@@ -156,11 +156,17 @@ class Game {
 							case 0: s = topInsert(); break;
 							case 1: s = downInsert(); break;
 						}
+						if (s == -1) {
+							s = checkVertical(selected_row, selected_col);
+						}
 						break;
 					case 2:
 						switch (a0 & 1) {
 							case 0: s = leftInsert(); break;
 							case 1: s = rightInsert(); break;
+						}
+						if (s == -1) {
+							s = checkHorizontal(selected_row, selected_col);
 						}
 						break;
 				}
@@ -196,22 +202,22 @@ class Game {
 	int check(int row, int col, boolean isHorizontalRotated, boolean isVerticalRotated) {
 		int s;
 		s = (isHorizontalRotated? -1: checkHorizontal(row, col));
-		if (s == 0 || s == 1) {
+		if (s != -1) {
 			return s;
 		}
 		s = (isVerticalRotated? -1: checkVertical(row, col));
-		if (s == 0 || s == 1) {
+		if (s != -1) {
 			return s;
 		}
 		if (row == col) {
 			s = checkBackSlash(row, col);
-			if (s == 0 || s == 1) {
+			if (s != -1) {
 				return s;
 			}
 		}
 		if (row == SIZE - col - 1) {
 			s = checkForwardSlash(row, col);
-			if (s == 0 || s == 1) {
+			if (s != -1) {
 				return s;
 			}
 		}
@@ -328,7 +334,7 @@ class Game {
 				return -1;
 			}
 		}
-		return s;
+		return (s == 2? -1: s);
 	}
 	
 	int checkVertical(int row, int col) {
@@ -338,7 +344,7 @@ class Game {
 				return -1;
 			}
 		}
-		return s;
+		return (s == 2? -1: s);
 	}
 	
 	int checkBackSlash(int row, int col) {
@@ -348,7 +354,7 @@ class Game {
 				return -1;
 			}
 		}
-		return s;
+		return (s == 2? -1: s);
 	}
 	
 	int checkForwardSlash(int row, int col) {
@@ -358,7 +364,7 @@ class Game {
 				return -1;
 			}
 		}
-		return s;
+		return (s == 2? -1: s);
 	}
 
 }
